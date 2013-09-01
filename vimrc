@@ -1,3 +1,5 @@
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
+
 set nocompatible               " Be iMproved
 
 if has('vim_starting')
@@ -13,49 +15,52 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
 NeoBundle 'Shougo/vimproc'
 
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'spf13/vim-colors'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'spf13/vim-autoclose'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'myusuf3/numbers.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'rails.vim'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'mattn/gist-vim'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'godlygeek/tabular'
-if executable('ctags')
-  NeoBundle 'majutsushi/tagbar'
-endif
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'elzr/vim-json'
-NeoBundle 'groenewege/vim-less'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'briancollins/vim-jst'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'airblade/vim-gitgutter'
+" Bundles {
+    NeoBundle 'altercation/vim-colors-solarized'
+    NeoBundle 'spf13/vim-colors'
+    NeoBundle 'tpope/vim-surround'
+    NeoBundle 'spf13/vim-autoclose'
+    NeoBundle 'kien/ctrlp.vim'
+    NeoBundle 'myusuf3/numbers.vim'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'Lokaltog/vim-easymotion'
+    NeoBundle 'rails.vim'
+    NeoBundle 'scrooloose/syntastic'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'mattn/webapi-vim'
+    NeoBundle 'mattn/gist-vim'
+    NeoBundle 'scrooloose/nerdcommenter'
+    NeoBundle 'godlygeek/tabular'
+    if executable('ctags')
+      NeoBundle 'majutsushi/tagbar'
+    endif
+    NeoBundle 'Shougo/neocomplete.vim'
+    NeoBundle 'Shougo/neosnippet'
+    NeoBundle 'elzr/vim-json'
+    NeoBundle 'groenewege/vim-less'
+    NeoBundle 'pangloss/vim-javascript'
+    NeoBundle 'briancollins/vim-jst'
+    NeoBundle 'kchmck/vim-coffee-script'
+    NeoBundle 'airblade/vim-gitgutter'
 
-" HTML
-NeoBundle 'amirh/HTML-AutoCloseTag'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'tpope/vim-haml'
+    " HTML
+    NeoBundle 'amirh/HTML-AutoCloseTag'
+    NeoBundle 'hail2u/vim-css3-syntax'
+    NeoBundle 'tpope/vim-haml'
 
-" Ruby
-NeoBundle 'tpope/vim-rails'
-let g:rubycomplete_buffer_loading = 1
-"let g:rubycomplete_classes_in_global = 1
-"let g:rubycomplete_rails = 1
+    " Ruby
+    NeoBundle 'tpope/vim-rails'
+    let g:rubycomplete_buffer_loading = 1
+    "let g:rubycomplete_classes_in_global = 1
+    "let g:rubycomplete_rails = 1
 
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'spf13/vim-preview'
-NeoBundle 'tpope/vim-cucumber'
-NeoBundle 'quentindecock/vim-cucumber-align-pipes'
-NeoBundle 'Puppet-Syntax-Highlighting'
+    NeoBundle 'tpope/vim-markdown'
+    NeoBundle 'spf13/vim-preview'
+    NeoBundle 'tpope/vim-cucumber'
+    NeoBundle 'quentindecock/vim-cucumber-align-pipes'
+    NeoBundle 'Puppet-Syntax-Highlighting'
+
+" }"
 
 set shortmess+=filmnrxoOtT      " Abbrev. of messages (avoids 'hit enter')
 
@@ -63,51 +68,54 @@ filetype plugin indent on
 filetype plugin on
 NeoBundleCheck
 
-let mapleader = ','
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-set nu
-syntax on
+" General config {
+    let mapleader = ','
+    set expandtab
+    set shiftwidth=2
+    set softtabstop=2
+    set nu
+    syntax on
 
-" Snippets "
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+    if has('cmdline_info')
+      set ruler                   " Show the ruler
+      set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
+      set showcmd                 " Show partial commands in status line and
+                                  " Selected characters/lines in visual mode
+    endif
 
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: "\<TAB>"
+    if has('statusline')
+      set laststatus=2
+      " Broken down into easily includeable segments
+      set statusline=%<%f\                     " Filename
+      set statusline+=%w%h%m%r                 " Options
+      set statusline+=%{fugitive#statusline()} " Git Hotness
+      set statusline+=\ [%{&ff}/%Y]            " Filetype
+      set statusline+=\ [%{getcwd()}]          " Current dir
+      set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
 
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+    " Window movements"
+    map <C-J> <C-W>j<C-W>_
+    map <C-K> <C-W>k<C-W>_
+    map <C-L> <C-W>l<C-W>_
+    map <C-H> <C-W>h<C-W>_
 
-if has('cmdline_info')
-  set ruler                   " Show the ruler
-  set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
-  set showcmd                 " Show partial commands in status line and
-                              " Selected characters/lines in visual mode
-endif
+    if has("user_commands")
+        command! -bang -nargs=* -complete=file E e<bang> <args>
+        command! -bang -nargs=* -complete=file W w<bang> <args>
+        command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+        command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+        command! -bang Wa wa<bang>
+        command! -bang WA wa<bang>
+        command! -bang Q q<bang>
+        command! -bang QA qa<bang>
+        command! -bang Qa qa<bang>
+    endif
+    
+    "Yank to end of line"
+    nnoremap Y y$ 
 
-if has('statusline')
-  set laststatus=2
-  " Broken down into easily includeable segments
-  set statusline=%<%f\                     " Filename
-  set statusline+=%w%h%m%r                 " Options
-  set statusline+=%{fugitive#statusline()} " Git Hotness
-  set statusline+=\ [%{&ff}/%Y]            " Filetype
-  set statusline+=\ [%{getcwd()}]          " Current dir
-  set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-endif
-
-" Formatting {
+    " Formatting {
 
     set nowrap                      " Wrap long lines
     set autoindent                  " Indent at the same level of the previous line
@@ -135,89 +143,75 @@ endif
     " Workaround broken colour highlighting in Haskell
     autocmd FileType haskell setlocal nospell
 
-" }
+    " }
+    
+    " Code folding options {
+    "
+        nmap <leader>f0 :set foldlevel=0<CR>
+        nmap <leader>f1 :set foldlevel=1<CR>
+        nmap <leader>f2 :set foldlevel=2<CR>
+        nmap <leader>f3 :set foldlevel=3<CR>
+        nmap <leader>f4 :set foldlevel=4<CR>
+        nmap <leader>f5 :set foldlevel=5<CR>
+        nmap <leader>f6 :set foldlevel=6<CR>
+        nmap <leader>f7 :set foldlevel=7<CR>
+        nmap <leader>f8 :set foldlevel=8<CR>
+        nmap <leader>f9 :set foldlevel=9<CR>
+    " }
 
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <C-L> <C-W>l<C-W>_
-map <C-H> <C-W>h<C-W>_
+    " Toggle search highlighting {
+        nmap <silent> <leader>/ :set invhlsearch<CR>
+    " }"
 
-if has("user_commands")
-    command! -bang -nargs=* -complete=file E e<bang> <args>
-    command! -bang -nargs=* -complete=file W w<bang> <args>
-    command! -bang -nargs=* -complete=file Wq wq<bang> <args>
-    command! -bang -nargs=* -complete=file WQ wq<bang> <args>
-    command! -bang Wa wa<bang>
-    command! -bang WA wa<bang>
-    command! -bang Q q<bang>
-    command! -bang QA qa<bang>
-    command! -bang Qa qa<bang>
-endif
+    " Find merge conflict markers {
+        map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+    " }"
 
-nnoremap Y y$
+    " Shortcuts
+    " Change Working Directory to that of the current file
+    cmap cwd lcd %:p:h
+    cmap cd. lcd %:p:h
 
-" Code folding options
-nmap <leader>f0 :set foldlevel=0<CR>
-nmap <leader>f1 :set foldlevel=1<CR>
-nmap <leader>f2 :set foldlevel=2<CR>
-nmap <leader>f3 :set foldlevel=3<CR>
-nmap <leader>f4 :set foldlevel=4<CR>
-nmap <leader>f5 :set foldlevel=5<CR>
-nmap <leader>f6 :set foldlevel=6<CR>
-nmap <leader>f7 :set foldlevel=7<CR>
-nmap <leader>f8 :set foldlevel=8<CR>
-nmap <leader>f9 :set foldlevel=9<CR>
+    " Visual shifting (does not exit Visual mode)
+    vnoremap < <gv
+    vnoremap > >gv
 
-" Toggle search highlighting
-nmap <silent> <leader>/ :set invhlsearch<CR>
+    " Allow using the repeat operator with a visual selection (!)
+    " http://stackoverflow.com/a/8064607/127816
+    vnoremap . :normal .<CR>
 
-" Find merge conflict markers
-map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+    " Fix home and end keybindings for screen, particularly on mac
+    " - for some reason this fixes the arrow keys too. huh.
+    map [F $
+    imap [F $
+    map [H g0
+    imap [H g0
 
-" Shortcuts
-" Change Working Directory to that of the current file
-cmap cwd lcd %:p:h
-cmap cd. lcd %:p:h
+    " For when you forget to sudo.. Really Write the file.
+    cmap w!! w !sudo tee % >/dev/null
 
-" Visual shifting (does not exit Visual mode)
-vnoremap < <gv
-vnoremap > >gv
+    " Some helpers to edit mode
+    " http://vimcasts.org/e/14
+    cnoremap %% <C-R>=expand('%:h').'/'<cr>
+    map <leader>ew :e %%
+    map <leader>es :sp %%
+    map <leader>ev :vsp %%
+    map <leader>et :tabe %%
 
-" Allow using the repeat operator with a visual selection (!)
-" http://stackoverflow.com/a/8064607/127816
-vnoremap . :normal .<CR>
+    " Adjust viewports to the same size
+    map <Leader>= <C-w>=
 
-" Fix home and end keybindings for screen, particularly on mac
-" - for some reason this fixes the arrow keys too. huh.
-map [F $
-imap [F $
-map [H g0
-imap [H g0
+    " Map <Leader>ff to display all lines with keyword under cursor
+    " and ask which one to jump to
+    nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
-" For when you forget to sudo.. Really Write the file.
-cmap w!! w !sudo tee % >/dev/null
+    " Easier horizontal scrolling
+    map zl zL
+    map zh zH
 
-" Some helpers to edit mode
-" http://vimcasts.org/e/14
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
+" }"
 
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
-
-" Map <Leader>ff to display all lines with keyword under cursor
-" and ask which one to jump to
-nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
-
-" Easier horizontal scrolling
-map zl zL
-map zh zH
-
-" }
-
+"}"
 
 " Plugins {
     " Misc {
@@ -250,6 +244,26 @@ map zh zH
         set completeopt=menu,preview,longest
     " }
 
+    " NeoComplete {
+        " Snippets "
+        " Plugin key-mappings.
+        imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+        smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+        xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+        " SuperTab like snippets behavior.
+        imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+              \ "\<Plug>(neosnippet_expand_or_jump)"
+              \: pumvisible() ? "\<C-n>" : "\<TAB>"
+        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+              \ "\<Plug>(neosnippet_expand_or_jump)"
+              \: "\<TAB>"
+
+        " For snippet_complete marker.
+        if has('conceal')
+          set conceallevel=2 concealcursor=i
+        endif
+    " }"
     " Ctags {
         set tags=./tags;/,~/.vimtags
 
@@ -435,3 +449,15 @@ map zh zH
         let g:gitgutter_realtime = 0
     " }
 "}
+"
+set winwidth=84
+" We have to have a winheight bigger than we want to set winminheight. But if
+" we set winheight to be huge before winminheight, the winminheight set will
+" fail.
+set winheight=5
+set winminheight=5
+set winheight=999
+" "
+map <leader>gr :topleft :split config/routes.rb<cr>
+map <leader>gg :topleft 100 :split Gemfile<cr>
+
