@@ -18,6 +18,7 @@ NeoBundle 'Shougo/vimproc'
 " Bundles {
     NeoBundle 'altercation/vim-colors-solarized'
     NeoBundle 'spf13/vim-colors'
+    NeoBundle 'flazz/vim-colorschemes'
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'spf13/vim-autoclose'
     NeoBundle 'kien/ctrlp.vim'
@@ -49,7 +50,9 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'tpope/vim-haml'
 
     " Ruby
+    NeoBundle 'vim-ruby/vim-ruby'
     NeoBundle 'tpope/vim-rails'
+    NeoBundle 'tpope/vim-rbenv'
     let g:rubycomplete_buffer_loading = 1
     "let g:rubycomplete_classes_in_global = 1
     "let g:rubycomplete_rails = 1
@@ -460,4 +463,50 @@ set winheight=999
 " "
 map <leader>gr :topleft :split config/routes.rb<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
+
+
+function! RunTests(filename)
+    " Write the file and run tests for the given filename
+    :w
+    :silent !echo;echo;echo;echo;echo
+    exec ":!bundle exec rspec " . a:filename
+endfunction
+
+function! SetTestFile()
+    " Set the spec file that tests will be run for.
+    let t:grb_test_file=@%
+endfunction
+
+function! RunTestFile(...)
+    if a:0
+        let command_suffix = a:1
+    else
+        let command_suffix = ""
+    endif
+
+    " Run the tests for the previously-marked file.
+    let in_spec_file = match(expand("%"), '_spec.rb$') != -1
+    if in_spec_file
+        call SetTestFile()
+    elseif !exists("t:grb_test_file")
+        return
+    end
+    call RunTests(t:grb_test_file . command_suffix)
+endfunction
+
+function! RunNearestTest()
+    let spec_line_number = line('.')
+    call RunTestFile(":" . spec_line_number)
+endfunction
+
+" Run this file
+map <leader>t :call RunTestFile()<cr>
+" Run only the example under the cursor
+map <leader>T :call RunNearestTest()<cr>
+" Run all test files
+map <leader>a :call RunTests('spec')<cr>
+
+cabbrev ! VimProcBang
+colorscheme vividchalk
+set nospell
 
