@@ -31,6 +31,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'mattn/webapi-vim'
     NeoBundle 'mattn/gist-vim'
     NeoBundle 'scrooloose/nerdcommenter'
+    NeoBundle 'scrooloose/nerdtree'
     NeoBundle 'godlygeek/tabular'
     if executable('ctags')
       NeoBundle 'majutsushi/tagbar'
@@ -509,4 +510,9 @@ map <leader>a :call RunTests('spec')<cr>
 cabbrev ! VimProcBang
 colorscheme vividchalk
 set nospell
+
+set guifont=Meslo\ LG\ S\ DZ:h13
+nmap <F2> :NERDTreeToggle<cr>
+map <F5> :%!tidy -xml -q -utf8 -indent<cr>
+nnoremap <leader><leader> <C-^>
 
