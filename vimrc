@@ -17,31 +17,19 @@ NeoBundle 'Shougo/vimproc'
 
 " Bundles {
     NeoBundle 'altercation/vim-colors-solarized'
-    NeoBundle 'spf13/vim-colors'
-    NeoBundle 'flazz/vim-colorschemes'
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'spf13/vim-autoclose'
     NeoBundle 'kien/ctrlp.vim'
     NeoBundle 'myusuf3/numbers.vim'
     NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'Lokaltog/vim-easymotion'
-    NeoBundle 'rails.vim'
+    NeoBundle 'tpope/vim-rails'
     NeoBundle 'scrooloose/syntastic'
-    NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'mattn/webapi-vim'
-    NeoBundle 'mattn/gist-vim'
     NeoBundle 'scrooloose/nerdcommenter'
-    NeoBundle 'scrooloose/nerdtree'
     NeoBundle 'godlygeek/tabular'
-    if executable('ctags')
-      NeoBundle 'majutsushi/tagbar'
-    endif
     NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'Shougo/neosnippet'
     NeoBundle 'elzr/vim-json'
-    NeoBundle 'groenewege/vim-less'
     NeoBundle 'pangloss/vim-javascript'
-    NeoBundle 'briancollins/vim-jst'
     NeoBundle 'kchmck/vim-coffee-script'
     NeoBundle 'airblade/vim-gitgutter'
 
@@ -52,17 +40,13 @@ NeoBundle 'Shougo/vimproc'
 
     " Ruby
     NeoBundle 'vim-ruby/vim-ruby'
-    NeoBundle 'tpope/vim-rails'
     NeoBundle 'tpope/vim-rbenv'
     let g:rubycomplete_buffer_loading = 1
-    "let g:rubycomplete_classes_in_global = 1
-    "let g:rubycomplete_rails = 1
+    let g:rubycomplete_classes_in_global = 1
+    let g:rubycomplete_rails = 1
 
-    NeoBundle 'tpope/vim-markdown'
-    NeoBundle 'spf13/vim-preview'
     NeoBundle 'tpope/vim-cucumber'
     NeoBundle 'quentindecock/vim-cucumber-align-pipes'
-    NeoBundle 'Puppet-Syntax-Highlighting'
 
 " }"
 
@@ -153,6 +137,12 @@ NeoBundleCheck
     set splitbelow                  " Puts new split windows to the bottom of the current
     "set matchpairs+=<:>             " Match, to be used with %
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    set background=dark
+    colorscheme solarized
+    set nospell
+    set hlsearch
+
+    set guifont=Meslo\ LG\ S\ DZ:h13
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
@@ -528,11 +518,6 @@ map <leader>T :call RunNearestTest()<cr>
 " Run all test files
 map <leader>a :call RunTests('spec')<cr>
 
-cabbrev ! VimProcBang
-colorscheme vividchalk
-set nospell
-
-set guifont=Meslo\ LG\ S\ DZ:h13
 nmap <F2> :NERDTreeToggle<cr>
 map <F5> :%!tidy -xml -q -utf8 -indent<cr>
 nnoremap <leader><leader> <C-^>
