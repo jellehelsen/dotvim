@@ -1,5 +1,3 @@
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-
 set nocompatible               " Be iMproved
 
 if has('vim_starting')
@@ -21,26 +19,30 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'spf13/vim-autoclose'
     NeoBundle 'kien/ctrlp.vim'
     NeoBundle 'myusuf3/numbers.vim'
-    NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'tpope/vim-rails'
     NeoBundle 'scrooloose/syntastic'
     NeoBundle 'scrooloose/nerdcommenter'
     NeoBundle 'godlygeek/tabular'
     NeoBundle 'Shougo/neocomplete.vim'
     NeoBundle 'Shougo/neosnippet'
+    NeoBundle 'honza/vim-snippets'
     NeoBundle 'elzr/vim-json'
     NeoBundle 'pangloss/vim-javascript'
     NeoBundle 'kchmck/vim-coffee-script'
     NeoBundle 'airblade/vim-gitgutter'
+    NeoBundle 'LokiChaos/vim-tintin'
 
     " HTML
     NeoBundle 'amirh/HTML-AutoCloseTag'
     NeoBundle 'hail2u/vim-css3-syntax'
     NeoBundle 'tpope/vim-haml'
+    NeoBundle 'tpope/vim-unimpaired'
 
     " Ruby
     NeoBundle 'vim-ruby/vim-ruby'
     NeoBundle 'tpope/vim-rbenv'
+    NeoBundle 'tpope/vim-bundler'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'tpope/vim-rails'
     let g:rubycomplete_buffer_loading = 1
     let g:rubycomplete_classes_in_global = 1
     let g:rubycomplete_rails = 1
@@ -63,6 +65,7 @@ NeoBundleCheck
     set softtabstop=2
     set nu
     syntax on
+    set ignorecase smartcase
 
     let dir_list = {
                 \ 'backup': 'backupdir',
@@ -138,9 +141,12 @@ NeoBundleCheck
     "set matchpairs+=<:>             " Match, to be used with %
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     set background=dark
+    syntax enable
     colorscheme solarized
     set nospell
+    set incsearch
     set hlsearch
+    set cursorline
 
     set guifont=Meslo\ LG\ S\ DZ:h13
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
@@ -178,6 +184,54 @@ NeoBundleCheck
         nmap <silent> <leader>/ :set invhlsearch<CR>
     " }"
 
+    augroup vimrcEx
+        " Clear all autocmds in the group
+        autocmd!
+        autocmd FileType text setlocal textwidth=78
+        " Jump to last cursor position unless it's invalid or in an
+        " event handler
+        autocmd BufReadPost *
+                    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+                    \   exe "normal g`\"" |
+                    \ endif
+
+        "for ruby, autoindent with two spaces, always expand tabs
+        autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+        autocmd FileType python set sw=4 sts=4 et
+
+        autocmd! BufRead,BufNewFile *.sass setfiletype sass 
+
+        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
+        autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
+
+        " Indent p tags
+        " autocmd FileType html,eruby if
+        " g:html_indent_tags !~ '\\|p\>' | let
+        " g:html_indent_tags .= '\|p\|li\|dt\|dd' |
+        " endif
+
+        " Don't syntax highlight markdown because
+        " it's often wrong
+        autocmd! FileType mkd setlocal syn=off
+
+        " Leave the return key alone when in
+        " command line windows, since it's
+        " used
+        " to run commands there.
+        autocmd! CmdwinEnter * :unmap <cr>
+        autocmd! CmdwinLeave * :call
+    augroup END
+
+    nnoremap <leader>s :call FocusOnFile()<cr>
+
+    function! FocusOnFile()
+        tabnew %
+        normal! v
+        normal! l
+        call OpenTestAlternate()
+        normal! h
+    endfunction
+              
     " Find merge conflict markers {
         map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
     " }"
@@ -476,18 +530,45 @@ set winheight=999
 map <leader>gr :topleft :split config/routes.rb<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
 
-
-function! RunTests(filename)
-    " Write the file and run tests for the given filename
-    :w
-    :silent !echo;echo;echo;echo;echo
-    exec ":!bundle exec rspec " . a:filename
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SWITCH BETWEEN TEST AND PRODUCTION CODE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! OpenTestAlternate()
+  let new_file = AlternateForCurrentFile()
+  exec ':e ' . new_file
 endfunction
-
-function! SetTestFile()
-    " Set the spec file that tests will be run for.
-    let t:grb_test_file=@%
+function! AlternateForCurrentFile()
+  let current_file = expand("%")
+  let new_file = current_file
+  let in_spec = match(current_file, '^spec/') != -1
+  let going_to_spec = !in_spec
+  let in_app = match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<views\>') != -1 || match(current_file, '\<helpers\>') != -1
+  if going_to_spec
+    if in_app
+      let new_file = substitute(new_file, '^app/', '', '')
+    end
+    let new_file = substitute(new_file, '\.e\?rb$', '_spec.rb', '')
+    let new_file = 'spec/' . new_file
+  else
+    let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
+    let new_file = substitute(new_file, '^spec/', '', '')
+    if in_app
+      let new_file = 'app/' . new_file
+    end
+  endif
+  return new_file
 endfunction
+nnoremap <leader>. :call OpenTestAlternate()<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RUNNING TESTS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>t :call RunTestFile()<cr>
+map <leader>T :call RunNearestTest()<cr>
+map <leader>a :call RunTests('')<cr>
+map <leader>c :w\|:!script/features<cr>
+map <leader>w :w\|:!script/features --profile wip<cr>
 
 function! RunTestFile(...)
     if a:0
@@ -497,8 +578,8 @@ function! RunTestFile(...)
     endif
 
     " Run the tests for the previously-marked file.
-    let in_spec_file = match(expand("%"), '_spec.rb$') != -1
-    if in_spec_file
+    let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\)$') != -1
+    if in_test_file
         call SetTestFile()
     elseif !exists("t:grb_test_file")
         return
@@ -511,14 +592,47 @@ function! RunNearestTest()
     call RunTestFile(":" . spec_line_number)
 endfunction
 
-" Run this file
-map <leader>t :call RunTestFile()<cr>
-" Run only the example under the cursor
-map <leader>T :call RunNearestTest()<cr>
-" Run all test files
-map <leader>a :call RunTests('spec')<cr>
+function! SetTestFile()
+    " Set the spec file that tests will be run for.
+    let t:grb_test_file=@%
+endfunction
 
+function! RunTests(filename)
+    " Write the file and run tests for the given filename
+    if expand("%") != ""
+      :w
+    end
+    if match(a:filename, '\.feature$') != -1
+        exec ":!script/features " . a:filename
+    else
+        if filereadable("script/test")
+            exec ":!script/test " . a:filename
+        elseif filereadable("Gemfile")
+            exec ":!bundle exec rspec --color " . a:filename
+        else
+            exec ":!rspec --color " . a:filename
+        end
+    end
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""
+" Misc
+" """"""""""""""""""""""""""""""""""""""""
 nmap <F2> :NERDTreeToggle<cr>
 map <F5> :%!tidy -xml -q -utf8 -indent<cr>
 nnoremap <leader><leader> <C-^>
+" Insert a hash rocket with <c-l>
+ imap <c-l> <space>=><space>
+ " Can't be bothered to understand ESC vs <c-c> in insert mode
+ imap <c-c> <esc>
+ " Clear the search buffer when hitting return
+ function! MapCR()
+   nnoremap <Leader>h :nohlsearch<cr>
+endfunction
+call MapCR()
 
+hi! IncSearch cterm=NONE,underline term=NONE,underline
+hi! Search cterm=NONE,underline term=NONE,underline
+set scrolloff=5
+set sidescrolloff=5
+set grepprg=ack
