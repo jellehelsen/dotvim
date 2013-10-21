@@ -6,6 +6,8 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+
+set backupskip=/tmp/*,/private/tmp/*" 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -49,6 +51,9 @@ NeoBundle 'Shougo/vimproc'
 
     NeoBundle 'tpope/vim-cucumber'
     NeoBundle 'quentindecock/vim-cucumber-align-pipes'
+    NeoBundle 'xolox/vim-misc'
+    NeoBundle 'xolox/vim-notes'
+    NeoBundle 'mattn/emmet-vim.git'
 
 " }"
 
@@ -277,6 +282,8 @@ NeoBundleCheck
     " Easier horizontal scrolling
     map zl zL
     map zh zH
+    map <Leader>i mmgg=G`m<CR>
+    map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
 
 " }"
 
@@ -636,3 +643,5 @@ hi! Search cterm=NONE,underline term=NONE,underline
 set scrolloff=5
 set sidescrolloff=5
 set grepprg=ack
+
+:let g:notes_directories = ['~/Dropbox/Notes']
