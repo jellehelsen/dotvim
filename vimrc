@@ -54,6 +54,8 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'xolox/vim-misc'
     NeoBundle 'xolox/vim-notes'
     NeoBundle 'mattn/emmet-vim.git'
+    NeoBundle 'tpope/vim-abolish'
+    NeoBundle 'vimwiki/vimwiki'
 
 " }"
 
@@ -644,4 +646,5 @@ set scrolloff=5
 set sidescrolloff=5
 set grepprg=ack
 
-:let g:notes_directories = ['~/Dropbox/Notes']
+let g:notes_directories = ['~/Dropbox/Notes']
+let g:vimwiki_list = [{'path': '~/Google\ Drive/wiki/'}]
