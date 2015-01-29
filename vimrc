@@ -6,6 +6,8 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+set modeline
+set modelines=3
 
 set backupskip=/tmp/*,/private/tmp/*" 
 " Let NeoBundle manage NeoBundle
@@ -56,6 +58,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'mattn/emmet-vim.git'
     NeoBundle 'tpope/vim-abolish'
     NeoBundle 'vimwiki/vimwiki'
+    NeoBundle 'danielmiessler/VimBlog'
 
 " }"
 
@@ -158,7 +161,8 @@ NeoBundleCheck
     set guifont=Meslo\ LG\ S\ DZ:h13
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre * :%s/\s\+$//e
+    "<buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
     autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
