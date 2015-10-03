@@ -4,18 +4,21 @@ if has('vim_starting')
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+"call neobundle#rc(expand('~/.vim/bundle/'))
 
 set modeline
 set modelines=3
 
 set backupskip=/tmp/*,/private/tmp/*" 
 " Let NeoBundle manage NeoBundle
+
+call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc'
+
 
 " Recommended to install
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
-NeoBundle 'Shougo/vimproc'
 
 " Bundles {
     NeoBundle 'altercation/vim-colors-solarized'
@@ -40,6 +43,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'hail2u/vim-css3-syntax'
     NeoBundle 'tpope/vim-haml'
     NeoBundle 'tpope/vim-unimpaired'
+    NeoBundle 'othree/xml.vim'
 
     " Ruby
     NeoBundle 'vim-ruby/vim-ruby'
@@ -59,9 +63,12 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'tpope/vim-abolish'
     NeoBundle 'vimwiki/vimwiki'
     NeoBundle 'danielmiessler/VimBlog'
+    NeoBundle 'actionshrimp/vim-xpath'
 
 " }"
 
+
+call neobundle#end()
 set shortmess+=filmnrxoOtT      " Abbrev. of messages (avoids 'hit enter')
 
 filetype plugin indent on
@@ -76,6 +83,7 @@ NeoBundleCheck
     set nu
     syntax on
     set ignorecase smartcase
+	let g:xml_syntax_folding = 1
 
     let dir_list = {
                 \ 'backup': 'backupdir',
@@ -141,10 +149,11 @@ NeoBundleCheck
 
     set nowrap                      " Wrap long lines
     set autoindent                  " Indent at the same level of the previous line
-    set shiftwidth=4                " Use indents of 4 spaces
+    set shiftwidth=2                " Use indents of 4 spaces
     set expandtab                   " Tabs are spaces, not tabs
-    set tabstop=4                   " An indentation every four columns
-    set softtabstop=4               " Let backspace delete indent
+    set tabstop=2                   " An indentation every four columns
+    set softtabstop=2               " Let backspace delete indent
+    set backspace=2
     set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
     set splitright                  " Puts new vsplit windows to the right of the current
     set splitbelow                  " Puts new split windows to the bottom of the current
