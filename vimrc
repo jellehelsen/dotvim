@@ -37,6 +37,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'kchmck/vim-coffee-script'
     NeoBundle 'airblade/vim-gitgutter'
     NeoBundle 'LokiChaos/vim-tintin'
+    NeoBundle 'tpope/vim-projectionist'
 
     " HTML
     NeoBundle 'amirh/HTML-AutoCloseTag'
@@ -44,6 +45,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'tpope/vim-haml'
     NeoBundle 'tpope/vim-unimpaired'
     NeoBundle 'othree/xml.vim'
+    NeoBundle 'mustache/vim-mustache-handlebars'
 
     " Ruby
     NeoBundle 'vim-ruby/vim-ruby'
