@@ -29,8 +29,9 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'scrooloose/syntastic'
     NeoBundle 'scrooloose/nerdcommenter'
     NeoBundle 'godlygeek/tabular'
-    NeoBundle 'Shougo/neocomplete.vim'
+    NeoBundle 'Shougo/neocomplete'
     NeoBundle 'Shougo/neosnippet'
+    NeoBundle 'Shougo/neosnippet-snippets'
     NeoBundle 'honza/vim-snippets'
     NeoBundle 'elzr/vim-json'
     NeoBundle 'pangloss/vim-javascript'
@@ -53,9 +54,9 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'tpope/vim-bundler'
     NeoBundle 'tpope/vim-fugitive'
     NeoBundle 'tpope/vim-rails'
-    let g:rubycomplete_buffer_loading = 1
-    let g:rubycomplete_classes_in_global = 1
-    let g:rubycomplete_rails = 1
+    "let g:rubycomplete_buffer_loading = 1
+    "let g:rubycomplete_classes_in_global = 1
+    "let g:rubycomplete_rails = 1
 
     NeoBundle 'tpope/vim-cucumber'
     NeoBundle 'quentindecock/vim-cucumber-align-pipes'
