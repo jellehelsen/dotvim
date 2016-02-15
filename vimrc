@@ -39,6 +39,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'airblade/vim-gitgutter'
     NeoBundle 'LokiChaos/vim-tintin'
     NeoBundle 'tpope/vim-projectionist'
+    NeoBundle 'mileszs/ack.vim'
 
     " HTML
     NeoBundle 'amirh/HTML-AutoCloseTag'
