@@ -69,6 +69,7 @@ NeoBundle 'Shougo/vimproc'
     NeoBundle 'danielmiessler/VimBlog'
     NeoBundle 'actionshrimp/vim-xpath'
 
+    NeoBundle 'PProvost/vim-ps1'
 " }"
 
 
